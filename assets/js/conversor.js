@@ -30,6 +30,7 @@
   
   function Farenheit(valor)
   {
+    
   }
   
   exports.Temperatura = Temperatura;
