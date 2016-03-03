@@ -38,10 +38,15 @@
   exports.Farenheit = Farenheit;
 
   exports.convertir = function() {
-    var valor     = document.getElementById('convert').value,
-        elemento  = document.getElementById('converted'),
+     var valor     = document.getElementById('convert').value,
+    valor=valor.replace(/\s/g, '' );
+    var elemento  = document.getElementById('converted'),
         /* Extienda la RegeExp a la especificación. use una XRegExp */
-        regexp    = /^\s*([-+]?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*([a-z,A-Z]+)\s*$/i,
+       var expresion= XRegExp('(?<valor>[+-]?\\d+(\\.\\d+)?([e][+-]?\\d+)?)# valor
+                                (?<tipo>[a-z]+)# tipo \n\
+                                (?<to>[to]?) #to \n\
+                                (?<tipo2>[fckmyp] ) #tipo2' , 'xi');
+       
         valor     = valor.match(regexp);
     
     if (valor) {
