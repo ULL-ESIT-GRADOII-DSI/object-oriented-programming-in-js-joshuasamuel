@@ -3,17 +3,29 @@
 
   function Medida(valor,tipo)  
   {
-    /* tipo es opcional. Debería admitir  new Medida("45.2 Km") */
-    /* ademas de new Medida(45.2, "Km") */
+    this.valor = valor;
+    this.tipo = tipo || "";
   }
   
   function Temperatura(valor,tipo)
   {
-    /* tipo es opcional. Debería admitir new Medida("45.2 F") */
+    Medida.call(this,valor,tipo);
   }
   
+  Temperatura.prototype = new Medida();
+  Temperatura.prototype.constructor = Temperatura;
+
   function Celsius(valor)
   {
+    Temperatura.call(this,valor,"c");
+    
+    this.caf = function() {
+      return ((valor * 9/5) + 32);
+    };
+
+    this.cak = function() {
+      return (valor + 273.15);
+    };
   }
   
   function Farenheit(valor)
