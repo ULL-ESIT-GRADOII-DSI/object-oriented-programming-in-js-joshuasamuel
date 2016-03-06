@@ -1,120 +1,134 @@
 (function(exports) {
   "use strict";
 
-  function Medida(valor,tipo)  
+  function Medida(valor,tipo)
   {
-    this.valor = valor;
-    this.tipo = tipo || "";
+      this.valor = valor;
+      this.tipo = tipo || "";
   }
-  
+
   function Temperatura(valor,tipo)
   {
-    Medida.call(this,valor,tipo);
+    Medida.call(this, valor, tipo);
   }
-  
-  Temperatura.prototype = new Medida();
+
+  Temperatura.prototype = new Medida ();
   Temperatura.prototype.constructor = Temperatura;
 
   function Celsius(valor)
   {
-    Temperatura.call(this,valor,"c");
-    
-    this.caf = function() {
-      return ((valor * 9/5) + 32);
-    };
-
-    this.cak = function() {
-      return (valor + 273.15);
-    };
+    Temperatura.call(this, valor);
   }
-  
+
   Celsius.prototype = new Temperatura();
   Celsius.prototype.constructor = Celsius;
-  
-  function Farenheit(valor)
-  {
-    Temperatura.call(this,valor,"f");
-    this.fac = function() {
-      return ((valor - 32) * 5/9);
-    };
-    this.fak = function() {
-      return((valor + 459.67) * 5/9);
-    };
-  }
-  
-  Farenheit.prototype = new Temperatura();
-  Farenheit.prototype.constructor = Farenheit;
-  
+
+  Celsius.prototype.toFahrenheit = function () {
+    var result = (this.valor * 9/5)+32;
+    return result;
+  };
+
+  Celsius.prototype.toKelvin = function () {
+    var result = this.valor + 273.15;
+    return result;
+  };
+
   function Kelvin(valor)
   {
-    Temperatura.call(this, valor, "k");
-    this.kac = function() {
-      return(valor - 273.15);
-    };
-    this.kaf = function() {
-      return(valor * 9/5 - 459.67);
-    };
+    Temperatura.call(this, valor);
   }
-  
+
   Kelvin.prototype = new Temperatura();
   Kelvin.prototype.constructor = Kelvin;
-  
+
+  Kelvin.prototype.toCelsius = function () {
+    var result = this.valor - 273.15;
+    return result;
+  };
+
+  Kelvin.prototype.toFahrenheit = function () {
+    var result = ((this.valor - 273.15) * 9/5) + 32;
+    return result;
+  };
+
+  function Fahrenheit(valor)
+  {
+    Temperatura.call(this, valor);
+  }
+
+  Fahrenheit.prototype = new Temperatura();
+  Fahrenheit.prototype.constructor = Fahrenheit;
+
+  Fahrenheit.prototype.toCelsius = function () {
+    var result = (this.valor - 32) * 5/9;
+    return result;
+  };
+
+  Fahrenheit.prototype.toKelvin = function () {
+    var result = ((this.valor - 32) / (9/5)) + 273.15;
+    return result;
+  };
+
   exports.Temperatura = Temperatura;
   exports.Celsius = Celsius;
-  exports.Farenheit = Farenheit;
+  exports.Fahrenheit = Fahrenheit;
   exports.Kelvin = Kelvin;
 
   exports.convertir = function() {
-     var valor     = document.getElementById('convert').value;
-    valor=valor.replace(/\s/g, '' );
-    var elemento  = document.getElementById('converted');
-    var tipo;
-    var tipo2;
-        /* Extienda la RegeExp a la especificación. use una XRegExp */
-       var expresion= XRegExp('(?<valor>[+-]?\\d+(\\.\\d+)?([e][+-]?\\d+)?)# valor'
-                                '(?<tipo>[a-z]+)# tipo \n\'
-                                '(?<to>[to]?) #to \n\'
-                                '(?<tipo2>[fckmyp] ) #tipo2' , 'xi');
-       
-        valor = valor.match(regexp);
-    
+    var valor     = document.getElementById('convert').value,
+        elemento  = document.getElementById('converted'),
+        regexp = XRegExp('^(\\s*) \n' +
+                          '(?<val> [-+]?[0-9]+(\\.[0-9]+)?(?:e[+-]?[0-9]+)?) # val \n' +
+                          '(\\s*) \n' +
+                          '(?<tip> [fckFCK]) # tip \n' +
+                          '(\\s*) \n' +
+                          '(?<to> (to))? # to \n' +
+                          '(\\s*) \n' +
+                          '(?<para> [fckFCK]) # para \n' +
+                          '(\\s*)$','x');
+          valor = XRegExp.exec(valor, regexp);
+
     if (valor) {
-      var numero = valor[1],
-          tipo1   = valor[2].toLowerCase();
-          tipo2   = valor[2].toLowerCase();
-      
+      var numero = valor.val,
+          tipo   = valor.tip.toLowerCase(),
+          destino = valor.para.toLowerCase();
       numero = parseFloat(numero);
-      console.log("Valor: " + numero + ", Tipo: " + tipo);
-      
+      console.log("Valor: " + numero + ", Tipo: " + tipo + ", To: " + destino);
+
       switch (tipo) {
         case 'c':
           var celsius = new Celsius(numero);
-          if (tipo2 == 'f')
-            elemento.innerHTML = celsius.caf().toFixed(2) + " Farenheit";
-          if (tipo2 == 'k')
-            elemento.innerHTML = celsius.cak().toFixed(2) + " Kelvin";
+          if(destino == 'c')
+            elemento.innerHTML = numero.toFixed(2) + " Celsius";
+          if(destino == 'f')
+            elemento.innerHTML = celsius.toFahrenheit().toFixed(2) + " Fahrenheit";
+          if(destino == 'k')
+            elemento.innerHTML = celsius.toKelvin().toFixed(2) + " Kelvin";
           break;
         case 'f':
-          var farenheit = new Farenheit(numero);
-          if (tipo2 == 'c')
-            elemento.innerHTML = farenheit.fac().toFixed(2) + " Celsius";
-          if (tipo2 == 'k')
-            elemento.innerHTML = farenheit.fak().toFixed(2) + " Kelvin";
+          var fahrenheit = new Fahrenheit(numero);
+          if(destino == 'f')
+            elemento.innerHTML = numero.toFixed(2) + " Fahrenheit";
+          if(destino == 'c')
+            elemento.innerHTML = fahrenheit.toCelsius().toFixed(2) + " Celsius";
+          if(destino == 'k')
+            elemento.innerHTML = fahrenheit.toKelvin().toFixed(2) + " Kelvin";
           break;
-        case'k':
+        case 'k':
           var kelvin = new Kelvin(numero);
-          if (tipo2 == 'c')
-            elemento.innerHTML = kelvin.kac().toFixed(2) + " Celsius";
-          if (tipo2 == 'f')
-            elemento.innerHTML = kelvin.kaf().toFixed(2) + " Farenheit";
+          if(destino == 'k')
+            elemento.innerHTML = numero.toFixed(2) + " Kelvin";
+          if(destino == 'c')
+            elemento.innerHTML = kelvin.toCelsius().toFixed(2) + " Celsius";
+          if(destino == 'f')
+            elemento.innerHTML = kelvin.toFahrenheit().toFixed(2) + " Fahrenheit";
           break;
-        
         default:
-          elemento.innerHTML = "Error! El uso corecto es por ejemplo: -3.7C.";
+          elemento.innetHTML = ".";
       }
+
     }
     else
-      elemento.innerHTML = "";
+      elemento.innerHTML = "Introduzca una temperatura valida: 330e-1 F to C";
   }
-  
 })(this);
