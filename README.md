@@ -5,13 +5,13 @@ Este repositorio aloja la práctica de conversión de tipos, realizada con html,
 
 **Repositorio GitHuB**
 
-* [Repositorio]()
+* [https://github.com/ULL-ESIT-GRADOII-DSI/object-oriented-programming-in-js-joshuasamuel](Repositorio)
 
 **Página de la práctica**
 
-* [Web]()
+* [https://ULL-ESIT-GRADOII-DSI.github.io/object-oriented-programming-in-js-joshuasamuel](URL pagina)
 
 **Página del autor**
 
-* [Web Author]()
-
+* [http://losnen.github.io/](Samuel Ramos Barroso)
+* [http://losnen.github.io/](Joshua Pérez)
