@@ -14,4 +14,4 @@ Este repositorio aloja la práctica de conversión de tipos, realizada con html,
 **Página del autor**
 
 * [http://losnen.github.io/](Samuel Ramos Barroso)
-* [http://losnen.github.io/](Joshua Pérez)
+* [http://joshuape.github.io/](Joshua Pérez)
